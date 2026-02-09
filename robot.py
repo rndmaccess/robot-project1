@@ -12,7 +12,7 @@ class Robot:
         pass
 
     def tilt_head(self):
-        controller = HeadController
+        controller = HeadController()
         pass
 
     def rotate_waist(self):
