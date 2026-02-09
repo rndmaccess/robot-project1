@@ -5,4 +5,5 @@ class WheelController:
         pass
 
     def drive(self):
+        controller = Controller()
         pass

@@ -5,7 +5,9 @@ class HeadController:
         pass
 
     def tilt(self):
+        controller = Controller()
         pass
 
     def pan(self, angle):
+        controller = Controller()
         pass

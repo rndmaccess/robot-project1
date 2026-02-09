@@ -4,5 +4,6 @@ class WaistController:
     def __init__(self):
         pass
 
-    def rotate(self):
+    def rotate(self, angle):
+        controller = Controller()
         pass
