@@ -5,20 +5,21 @@ from wheel_controller import WheelController
 
 class Robot:
     def __init__(self):
+        # Add the logic for tty1 vs tty0 here
         pass
 
-    def pan_head(self):
+    def pan_head(self, angle, servo):
         controller = HeadController()
-        pass
+        controller.pan(angle, servo)
 
-    def tilt_head(self):
+    def tilt_head(self, angle, servo):
         controller = HeadController()
-        pass
+        controller.tilt(angle, servo)
 
-    def rotate_waist(self):
+    def rotate_waist(self, angle, servo):
         controller = WaistController()
+        controller.rotate(angle, servo)
 
-
-    def drive_wheels(self):
+    def drive_wheels(self, robot_range, servo):
         controller = WheelController()
-        pass
+        controller.drive(robot_range, servo)
