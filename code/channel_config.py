@@ -15,7 +15,7 @@ bot = Robot()
 
 
 speed = 25
-next_channel = False;
+next_channel = False
 for i in range(24):
     next_channel = False 
     while (not next_channel):
@@ -52,9 +52,9 @@ print("Mapping finished... writing mapping to mapping.csv\n")
 
 
 
-    with open("mapping.csv", "w") as f:
-        to_write : str = ""
-        for mapping in channel_map:
-            to_write += mapping[0] + "," + mapping[1]
-        f.write(to_write) 
+with open("mapping.csv", "w") as f:
+    to_write : str = ""
+    for mapping in channel_map:
+        to_write += mapping[0] + "," + mapping[1]
+f.write(to_write) 
 
