@@ -3,7 +3,10 @@ from flask_cors import CORS
 from robot import Robot
 
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+
+server_name = "therobot.localhost"
+
+app = Flask(__name__)
 CORS(app)
 
 
@@ -67,7 +70,8 @@ def index():
 
 
 def main():
-    app.run(host='127.0.0.1', port=5002, debug=True)
+    app.config["SERVER_NAME"] = server_name 
+    app.run(host=server_name, port=5002, debug=True)
 
 
 if __name__ == '__main__':
