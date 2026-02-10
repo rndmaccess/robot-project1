@@ -8,18 +8,18 @@ class Robot:
         # Add the logic for tty1 vs tty0 here
         pass
 
-    def pan_head(self, angle, servo):
+    def pan_head(self, angle, chan):
         controller = HeadController()
-        controller.pan(angle, servo)
+        controller.pan(angle, chan)
 
-    def tilt_head(self, angle, servo):
+    def tilt_head(self, angle, chan):
         controller = HeadController()
-        controller.tilt(angle, servo)
+        controller.tilt(angle, chan)
 
-    def rotate_waist(self, angle, servo):
+    def rotate_waist(self, angle, chan):
         controller = WaistController()
-        controller.rotate(angle, servo)
+        controller.rotate(angle, chan)
 
-    def drive_wheels(self, robot_range, servo):
+    def drive_wheels(self, robot_range, chan):
         controller = WheelController()
-        controller.drive(robot_range, servo)
+        controller.drive(robot_range, chan)
