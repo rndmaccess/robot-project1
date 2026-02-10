@@ -1,19 +1,20 @@
 from maestro import Controller
 
 class HeadController:
-    def __init__(self):
+    controller : Controller
+
+    def __init__(self, controller : Controller):
+        self.controller = controller 
         pass
 
     def tilt(self, angle, chan):
-        controller = Controller()
         # We can tweak these if we need more rotation!
-        controller.setRange(chan, 45, 90)
-        controller.setSpeed(chan, 45)
-        controller.setTarget(chan, angle)
+        self.controller.setRange(chan, 45, 90)
+        self.controller.setSpeed(chan, 45)
+        self.controller.setTarget(chan, angle)
 
     def pan(self, angle, chan):
-        controller = Controller()
         # We can tweak these if we need more rotation!
-        controller.setRange(chan, 0, 180)
-        controller.setSpeed(chan, 45)
-        controller.setTarget(chan, angle)
+        self.controller.setRange(chan, 0, 180)
+        self.controller.setSpeed(chan, 45)
+        self.controller.setTarget(chan, angle)

@@ -1,12 +1,14 @@
 from maestro import Controller
 
 class WaistController:
-    def __init__(self):
+
+    controller : Controller
+    def __init__(self, controller : Controller):
+        self.controller = controller
         pass
 
     def rotate(self, angle, chan):
-        controller = Controller()
         # This range is a safe range between what angles the robot can turn
-        controller.setRange(chan, 0, 180)
-        controller.setSpeed(chan, 45)
-        controller.setTarget(chan, angle)
+        self.controller.setRange(chan, 0, 180)
+        self.controller.setSpeed(chan, 45)
+        self.controller.setTarget(chan, angle)
