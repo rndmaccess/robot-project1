@@ -16,6 +16,9 @@ class Robot:
         self.wheels = WheelController(self.master_controller)
         self.waist = WaistController(self.master_controller)
         pass
+    def close(self):
+        self.master_controller.close()
+
 
     def pan_head(self, angle, chan):
         self.head.pan(angle, chan)

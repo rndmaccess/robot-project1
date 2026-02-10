@@ -16,14 +16,14 @@ bot = Robot()
 
 speed = 25
 next_channel = False
-for i in range(24):
+for i in range(bot.master_controller.min,24):
     next_channel = False 
     while (not next_channel):
 
         print("running channel " + str(i) + "\n")
-        bot.drive_wheels(i, speed)
+        bot.drive_wheels(speed, i)
         time.sleep(1)
-        bot.drive_wheels(i, 0)
+        bot.drive_wheels(0, i)
 
         print("did this move anything? [y/n]\n")
 
