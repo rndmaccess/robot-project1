@@ -1,4 +1,4 @@
-from code.maestro import Controller
+from maestro import Controller
 
 class WaistController:
     def __init__(self):

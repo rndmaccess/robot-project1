@@ -11,7 +11,7 @@ CORS(app)
 def pan_head():
     if request.is_json:
         data = request.get_json()
-        #robot = Robot()
+        robot = Robot()
         #robot.pan_head()
 
         print("Recieved data: " + data)
@@ -23,18 +23,19 @@ def pan_head():
 
 @app.post('/tilt_head')
 def tilt_head():
-    #robot = Robot()
+    robot = Robot()
     #robot.tilt_head()
     pass
 
 
 @app.post('/rotate_waist')
 def rotate_waist():
-    #robot = Robot()
+    robot = Robot()
     #robot.rotate_waist()
     pass
 
 
+# Currently this is the only method that is attached to the joystick!
 @app.post('/drive')
 def drive():
     if request.is_json:
@@ -45,7 +46,7 @@ def drive():
         normalized_x = normalize_joystick(x)
         normalized_y = normalize_joystick(y)
         robot = Robot()
-        robot.drive_wheels()
+        # robot.drive_wheels()
 
         return jsonify({"response": f"Received: {data.get('message', 'No message')}"})
     return None

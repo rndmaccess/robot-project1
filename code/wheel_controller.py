@@ -1,4 +1,4 @@
-from code.maestro import Controller
+from maestro import Controller
 
 class WheelController:
     def __init__(self):

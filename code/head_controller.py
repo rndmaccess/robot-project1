@@ -1,4 +1,4 @@
-from code.maestro import Controller
+from maestro import Controller
 
 class HeadController:
     def __init__(self):
