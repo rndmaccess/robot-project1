@@ -11,3 +11,6 @@ class WheelController:
         # We can tweak this if we need it to go faster!
         self.controller.setRange(chan, 0, 75)
         self.controller.setSpeed(chan, speed)
+        self.controller.setTarget(chan,speed)
+	
+	
