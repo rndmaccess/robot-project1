@@ -29,5 +29,5 @@ class Robot:
     def rotate_waist(self, angle, chan):
         self.waist.rotate(angle, chan)
 
-    def drive_wheels(self, robot_range, chan):
-        self.wheels.drive(robot_range, chan)
+    def drive_wheels(self, speed):
+        self.wheels.drive(speed, 14)
