@@ -17,9 +17,9 @@ def pan_head():
         robot = Robot()
         #robot.pan_head()
 
-        print("Recieved data: " + data)
+        print("Received data: " + data)
 
-        return jsonify({"message": "Data recieved successfully",  "yourData": data}), 200
+        return jsonify({"message": "Data received successfully",  "yourData": data}), 200
     else:
         return jsonify({"error": "Request must be JSON"}), 400
 
@@ -75,7 +75,7 @@ def index():
 
 
 def main():
-    app.config["SERVER_NAME"] = server_name 
+    app.config["SERVER_NAME"] = server_name
     app.run(host=server_name, port=5002, debug=True)
 
 
