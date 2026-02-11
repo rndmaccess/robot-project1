@@ -1,0 +1,5 @@
+channel 0 = both wheels
+channel 1 = left wheel
+
+6000 = center (stop) value
++/- 2000 = reverse/forward

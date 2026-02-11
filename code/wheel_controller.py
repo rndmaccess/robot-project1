@@ -1,10 +1,11 @@
 from maestro import Controller
 # Wheel Channels = 14 & 15
 
-__MOTOR_MIN = 1200 
-__MOTOR_MAX = 1800
 class WheelController:
     controller : Controller 
+
+    __MOTOR_MIN = 1200 
+    __MOTOR_MAX = 1800
     def __init__(self, controller : Controller):
         self.controller = controller
         pass
@@ -15,9 +16,9 @@ class WheelController:
         # We can tweak this if we need it to go faster!
         # 1200 min 1800 max
 
-        self.controller.setRange(chan, __MOTOR_MIN, __MOTOR_MAX)
+        self.controller.setRange(chan, 0, 0)
+        
+        self.controller.setTarget(chan, speed)
 
-        self.controller.setSpeed(chan, speed)
-        self.controller.setTarget(chan,speed)
 	
 	
