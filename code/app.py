@@ -16,7 +16,7 @@ def pan_head():
         data = request.get_json()
         rot = data.get('rot')
         robot = Robot()
-        #robot.pan_head()
+        robot.pan_head(rot, 13)
 
         return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
     else:
@@ -26,8 +26,9 @@ def pan_head():
 @app.post('/tilt_head')
 def tilt_head():
     data = request.get_json()
+    rot = data.get('rot')
     robot = Robot()
-    #robot.tilt_head()
+    robot.tilt_head(rot, 13)
 
     return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
 
@@ -51,7 +52,8 @@ def drive():
         print(left_servo_speed, ",", right_servo_speed)
 
         robot = Robot()
-        # robot.drive_wheels()
+        robot.drive_wheels(left_servo_speed, 14)
+        robot.drive_wheels(right_servo_speed, 15)
 
         return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
     return None
