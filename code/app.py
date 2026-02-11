@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from robot import Robot
-
+import threading
 
 
 server_name = "therobot.localhost"
@@ -74,6 +74,19 @@ def calc_servo_speeds(joystick_x, joystick_y):
     left_servo_speed = int(6000 - (left_motor * 66.66))
     right_servo_speed = int(6000 - (right_motor * 66.66))
     return left_servo_speed, right_servo_speed
+
+
+@app.post('/speak')
+def speak():
+    if request.is_json:
+        data = request.get_json()
+        message = data.get('message')
+        robot = Robot()
+        thread = threading.Thread(target=robot.speak(message))
+        thread.start()
+
+        return jsonify({"response": f"Received: {data.get('message', 'no message')}"}), 200
+    return None
 
 @app.get('/')
 def index():
