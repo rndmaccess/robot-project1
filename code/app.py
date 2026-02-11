@@ -14,21 +14,23 @@ CORS(app)
 def pan_head():
     if request.is_json:
         data = request.get_json()
+        rot = data.get('rot')
         robot = Robot()
         #robot.pan_head()
 
-        print("Received data: " + data)
-
-        return jsonify({"message": "Data received successfully",  "yourData": data}), 200
+        return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
     else:
         return jsonify({"error": "Request must be JSON"}), 400
 
 
 @app.post('/tilt_head')
 def tilt_head():
+    data = request.get_json()
     robot = Robot()
     #robot.tilt_head()
-    pass
+
+    return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
+
 
 
 @app.post('/rotate_waist')
@@ -46,10 +48,12 @@ def drive():
         x = data.get('x')
         y = data.get('y')
         left_servo_speed, right_servo_speed = calc_servo_speeds(x, y)
+        print(left_servo_speed, ",", right_servo_speed)
+
         robot = Robot()
         # robot.drive_wheels()
 
-        return jsonify({"response": f"Received: {data.get('message', 'No message')}"})
+        return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
     return None
 
 def calc_servo_speeds(joystick_x, joystick_y):
@@ -65,8 +69,8 @@ def calc_servo_speeds(joystick_x, joystick_y):
         right_motor = (right_motor / max_val) * 30
 
     # Assuming 6000 is center
-    left_servo_speed = int(6000 + (left_motor * 66.66))
-    right_servo_speed = int(6000 + (right_motor * 66.66))
+    left_servo_speed = int(6000 - (left_motor * 66.66))
+    right_servo_speed = int(6000 - (right_motor * 66.66))
     return left_servo_speed, right_servo_speed
 
 @app.get('/')
