@@ -45,24 +45,29 @@ def drive():
         data = request.get_json()
         x = data.get('x')
         y = data.get('y')
-        print("Data received:", x, y)
-        normalized_x = normalize_joystick(x)
-        normalized_y = normalize_joystick(y)
+        left_servo_speed, right_servo_speed = calc_servo_speeds(x, y)
         robot = Robot()
         # robot.drive_wheels()
 
         return jsonify({"response": f"Received: {data.get('message', 'No message')}"})
     return None
 
-# This method normalizes the positions that
-# come back from our joystick!
-def normalize_joystick(pos):
-    center_point = 30
-    normalized_pos = (pos - center_point) / center_point
-    # A small deadzone for minor fluctuations
-    if abs(normalized_pos) < 0.1:
-        return 0
-    return normalized_pos
+def calc_servo_speeds(joystick_x, joystick_y):
+    # Mix steering and drive
+    left_motor = joystick_y + joystick_x
+    right_motor = joystick_y - joystick_x
+
+    # Normalize to keep within +/- 30.
+    # This prevents steering loss at high speeds!
+    max_val = max(abs(left_motor), abs(right_motor))
+    if max_val > 30:
+        left_motor = (left_motor / max_val) * 30
+        right_motor = (right_motor / max_val) * 30
+
+    # Assuming 6000 is center
+    left_servo_speed = int(6000 + (left_motor * 66.66))
+    right_servo_speed = int(6000 + (right_motor * 66.66))
+    return left_servo_speed, right_servo_speed
 
 @app.get('/')
 def index():
