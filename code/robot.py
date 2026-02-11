@@ -26,8 +26,8 @@ class Robot:
     def tilt_head(self, angle, chan):
         self.head.tilt(angle, chan)
 
-    def rotate_waist(self, angle, chan):
-        self.waist.rotate(angle, chan)
+    def rotate_waist(self, angle):
+        self.waist.rotate(angle, 5)
 
     def drive_wheels(self, speed):
-        self.wheels.drive(speed, 14)
+        self.wheels.drive(speed, 1)

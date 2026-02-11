@@ -9,6 +9,7 @@ class WaistController:
 
     def rotate(self, angle, chan):
         # This range is a safe range between what angles the robot can turn
-        self.controller.setRange(chan, 0, 180)
-        self.controller.setSpeed(chan, 45)
+        self.controller.setRange(chan, 0, 0) 
+        self.controller.setSpeed(chan, 0)
+        self.controller.setAccel(chan,0)
         self.controller.setTarget(chan, angle)
