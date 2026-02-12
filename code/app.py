@@ -1,9 +1,10 @@
+from queue import Queue
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from robot import Robot
 import threading
 
-
+message_queue = Queue()
 server_name = "therobot.localhost"
 
 app = Flask(__name__)
@@ -82,9 +83,7 @@ def speak():
     if request.is_json:
         data = request.get_json()
         message = data.get('message')
-        robot = Robot()
-        thread = threading.Thread(target=robot.speak(message))
-        thread.start()
+        message_queue.put(message)
 
         return jsonify({"response": f"Received: {data.get('message', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
@@ -93,8 +92,20 @@ def speak():
 def index():
     return 'Hello World!'
 
+def speak_messages():
+    global message_queue
+    robot = Robot()
+
+    while True:
+        if message_queue.qsize() > 0:
+            message = message_queue.get()
+            robot.speak(message)
+
 
 def main():
+    thread = threading.Thread(target=speak_messages)
+    thread.start()
+    thread.join()
     app.config["SERVER_NAME"] = server_name
     app.run(host=server_name, port=5002, debug=True)
 
