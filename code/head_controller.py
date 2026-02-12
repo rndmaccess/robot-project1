@@ -15,6 +15,8 @@ class HeadController:
 
     def pan(self, angle, chan):
         # We can tweak these if we need more rotation!
-        self.controller.setRange(chan, 0, 180)
-        self.controller.setSpeed(chan, 45)
+
+        self.controller.setRange(chan, 0, 0)
+        self.controller.setSpeed(chan, 0)
+        self.controller.setAccel(chan, 0)
         self.controller.setTarget(chan, angle)
