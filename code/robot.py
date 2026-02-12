@@ -26,8 +26,8 @@ class Robot:
         self.master_controller.close()
 
 
-    def pan_head(self, angle, chan):
-        self.head.pan(angle, chan)
+    def pan_head(self, angle):
+        self.head.pan(angle, 4)
 
     def tilt_head(self, angle, chan):
         self.head.tilt(angle, chan)
