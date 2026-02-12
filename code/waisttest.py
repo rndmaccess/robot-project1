@@ -6,14 +6,15 @@ import time
 r = Robot()
 speed = 8000
 
-r.rotate_waist(0)
+r.rotate_waist(6000)
 i = input()
-for i in range(6000, 8000):
-    r.rotate_waist(i)
-    print("Speed = " + str(i))
+
+
+r.rotate_waist(speed)
+print("Speed = " + str(i))
 
 i = input()
 
-r.rotate_waist(0)
+r.rotate_waist(6000)
 r.close()
 
