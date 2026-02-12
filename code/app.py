@@ -53,8 +53,19 @@ def drive():
         print(left_servo_speed, ",", right_servo_speed)
 
         robot = Robot()
-        robot.drive_wheels(left_servo_speed, 14)
-        robot.drive_wheels(right_servo_speed, 15)
+
+        if x < 0 and y < 0:
+            robot.drive_wheels(-left_servo_speed, 0)
+            robot.drive_wheels(-right_servo_speed, 1)
+        elif x < 0 < y:
+            robot.drive_wheels(left_servo_speed, 0)
+            robot.drive_wheels(-right_servo_speed, 1)
+        elif x > 0 > y:
+            robot.drive_wheels(-left_servo_speed, 0)
+            robot.drive_wheels(right_servo_speed, 1)
+        else:
+            robot.drive_wheels(left_servo_speed, 0)
+            robot.drive_wheels(right_servo_speed, 1)
 
         return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
