@@ -16,7 +16,7 @@ def pan_head():
         data = request.get_json()
         rot = data.get('rot')
         robot = Robot()
-        robot.pan_head(rot, 13)
+        robot.pan_head(rot)
 
         return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
@@ -28,7 +28,7 @@ def tilt_head():
         data = request.get_json()
         rot = data.get('rot')
         robot = Robot()
-        robot.tilt_head(rot, 13)
+        robot.tilt_head(rot)
 
         return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
@@ -53,8 +53,8 @@ def drive():
         print(left_servo_speed, ",", right_servo_speed)
 
         robot = Robot()
-        robot.drive_wheels(left_servo_speed, 14)
-        robot.drive_wheels(right_servo_speed, 15)
+        robot.drive_wheels(left_servo_speed)
+        robot.drive_wheels(right_servo_speed)
 
         return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
