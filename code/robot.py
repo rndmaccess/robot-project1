@@ -40,3 +40,6 @@ class Robot:
 
     def drive_wheels(self, speed):
         self.wheels.drive(speed, 1)
+
+    def turn_wheels(self, speed):
+        self.wheels.drive(speed, 0)
