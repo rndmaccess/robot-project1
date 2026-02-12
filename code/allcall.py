@@ -31,7 +31,26 @@ i = input()
 
 r.pan_head(6000)
 
+print("Waist")
 
+r.rotate_waist(6000)
+
+i = input()
+
+print("Speed = " + str(speed))
+r.rotate_waist(speed)
+
+i = input()
+
+speed = 4000
+
+print("Speed = " + str(speed))
+r.rotate_waist(speed)
+
+i = input()
+
+r.rotate_waist(6000)
+i = input()
 
 r.close()
 
