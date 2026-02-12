@@ -1,27 +1,40 @@
-import maestro
+from robot import Robot
 
-import time
+r = Robot()
+speed = 8000
 
-port = 1
+print("Head Tilt")
 
-servo = maestro.Controller()
-
-print("Init Servo " + str(port))
-
-servo.setTarget(port,0)
-
-time.sleep(1)
-
-print("Moving Servo " + str(port))
-
-servo.setTarget(port,6000)
+r.tilt_head(6000)
+i = input()
 
 
-time.sleep(1)
+r.tilt_head(speed)
+print("Speed = " + str(i))
 
-print("Returning Servo " + str(port) + " to default position")
+i = input()
 
-servo.setTarget(port,0)
+r.tilt_head(6000)
+
+print("Head Pan")
+
+speed = 8000
+
+r.pan_head(6000)
+i = input()
 
 
-servo.close()
+r.pan_head(speed)
+print("Speed = " + str(i))
+
+i = input()
+
+r.pan_head(6000)
+
+
+
+r.close()
+
+
+
+
