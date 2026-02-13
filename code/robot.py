@@ -39,7 +39,7 @@ class Robot:
         self.voice.say(message)
 
     def drive_wheels(self, speed):
-        self.wheels.drive(speed, 1)
+        self.wheels.drive(speed, 0)
 
     def turn_wheels(self, speed):
-        self.wheels.drive(speed, 0)
+        self.wheels.drive(speed, 1)

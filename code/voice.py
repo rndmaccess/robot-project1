@@ -1,4 +1,5 @@
 from espeakng import ESpeakNG
+import os
 
 class Voice:
 
@@ -7,4 +8,4 @@ class Voice:
         self.espeak = espeak
 
     def say(self, message):
-        self.espeak.say(message)
+        os.system(f'espeak-ng "{message}"')

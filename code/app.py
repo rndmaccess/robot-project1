@@ -5,7 +5,7 @@ from robot import Robot
 import threading
 
 message_queue = Queue()
-server_name = "therobot.localhost"
+server_name = "10.130.187.65"
 
 app = Flask(__name__)
 CORS(app)
@@ -84,6 +84,7 @@ def speak():
         data = request.get_json()
         message = data.get('message')
         message_queue.put(message)
+        print(message)
 
         return jsonify({"response": f"Received: {data.get('message', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
@@ -105,7 +106,8 @@ def speak_messages():
 def main():
     thread = threading.Thread(target=speak_messages)
     thread.start()
-    thread.join()
+    robot = Robot()
+    robot.drive_wheels(6000)
     app.config["SERVER_NAME"] = server_name
     app.run(host=server_name, port=5002, debug=True)
 
