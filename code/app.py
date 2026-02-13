@@ -19,6 +19,7 @@ def pan_head():
         rot = data.get('rot')
         robot = Robot()
         robot.pan_head(rot)
+        robot.close()
 
         return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
@@ -31,6 +32,7 @@ def tilt_head():
         rot = data.get('rot')
         robot = Robot()
         robot.tilt_head(rot)
+        robot.close()
 
         return jsonify({"response": f"Received: {data.get('rot', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
@@ -53,10 +55,10 @@ def drive():
         y = data.get('y')
         steering, throttle = calc_servo_speeds(x, y)
 
-
         robot = Robot()
         robot.drive_wheels(int(throttle))
         robot.turn_wheels(int(steering))
+        robot.close()
 
 
         return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
