@@ -1,3 +1,4 @@
+import math
 from queue import Queue
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -50,32 +51,34 @@ def drive():
         data = request.get_json()
         x = data.get('x')
         y = data.get('y')
-        left_servo_speed, right_servo_speed = calc_servo_speeds(x, y)
-        print(left_servo_speed, ",", right_servo_speed)
+        steering, throttle = calc_servo_speeds(x, y)
+
 
         robot = Robot()
-        robot.drive_wheels(left_servo_speed)
-        robot.drive_wheels(right_servo_speed)
+        robot.drive_wheels(int(throttle))
+        robot.turn_wheels(int(steering))
+
 
         return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
 
 def calc_servo_speeds(joystick_x, joystick_y):
-    # Mix steering and drive
-    left_motor = joystick_y + joystick_x
-    right_motor = joystick_y - joystick_x
+    angle = math.atan2(joystick_y, joystick_x)
+    force_magnitude = math.sqrt((joystick_x ** 2) + (joystick_y ** 2))
 
-    # Normalize to keep within +/- 30.
-    # This prevents steering loss at high speeds!
-    max_val = max(abs(left_motor), abs(right_motor))
-    if max_val > 30:
-        left_motor = (left_motor / max_val) * 30
-        right_motor = (right_motor / max_val) * 30
+    x_norm = math.cos(angle) * force_magnitude
+    y_norm = math.sin(angle) * force_magnitude
 
-    # Assuming 6000 is center
-    left_servo_speed = int(6000 - (left_motor * 66.66))
-    right_servo_speed = int(6000 - (right_motor * 66.66))
-    return left_servo_speed, right_servo_speed
+    x = round(x_norm * 2000 + 6000)
+    y = round(y_norm * 2000 + 6000)
+
+    x = max(4000, min(8000, x))
+    y = max(4000, min(8000, y))
+
+    steering = x
+    throttle = y
+
+    return steering, throttle
 
 
 @app.post('/speak')

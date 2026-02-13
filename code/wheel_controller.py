@@ -11,14 +11,9 @@ class WheelController:
         pass
 
     def drive(self, speed, chan):
-
-        # This will be how fast the robot goes from point a to b.
-        # We can tweak this if we need it to go faster!
         # 1200 min 1800 max
-
-        self.controller.setRange(chan, 0, 0)
-        
+        self.controller.setRange(chan, 1200, 1800)
         self.controller.setTarget(chan, speed)
 
-	
+
 	
