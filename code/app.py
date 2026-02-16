@@ -92,7 +92,7 @@ def speak():
     if request.is_json:
         data = request.get_json()
         message = data.get('message')
-        message_queue.put(message)
+        message_queue.put(message) # We put the messages in the queue here!
         print(message)
 
         return jsonify({"response": f"Received: {data.get('message', 'no message')}"}), 200
@@ -109,6 +109,7 @@ def speak_messages():
     while True:
         if message_queue.qsize() > 0:
             message = message_queue.get()
+            # When the previous message is finished the new message is spoken!
             robot.speak(message)
 
 
