@@ -50,6 +50,7 @@ def rotate_waist():
 def drive():
     if request.is_json:
         data = request.get_json()
+        # The values received will be between 0 and 60.
         x = data.get('x')
         y = data.get('y')
         steering, throttle = calc_servo_speeds(x, y)
