@@ -9,7 +9,7 @@ message_queue = Queue()
 server_name = "10.130.187.65"
 
 app = Flask(__name__)
-CORS(app)
+CORS(app) # This is used to validate the incoming requests on the server!
 
 
 @app.post('/pan_head')
@@ -63,6 +63,7 @@ def drive():
         return jsonify({"response": f"Received: {data.get('x', 'no message'), data.get('y', 'no message')}"}), 200
     return jsonify({"error": "Request must be JSON"}), 400
 
+# This method converts the joystick's x and y to values that can be used in motor commands
 def calc_servo_speeds(joystick_x, joystick_y):
     angle = math.atan2(joystick_y, joystick_x)
     force_magnitude = math.sqrt((joystick_x ** 2) + (joystick_y ** 2))
