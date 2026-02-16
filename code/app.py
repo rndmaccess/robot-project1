@@ -46,7 +46,6 @@ def rotate_waist():
     pass
 
 
-# Currently this is the only method that is attached to the joystick!
 @app.post('/drive')
 def drive():
     if request.is_json:
@@ -68,12 +67,15 @@ def calc_servo_speeds(joystick_x, joystick_y):
     angle = math.atan2(joystick_y, joystick_x)
     force_magnitude = math.sqrt((joystick_x ** 2) + (joystick_y ** 2))
 
+    # Normalize the values
     x_norm = math.cos(angle) * force_magnitude
     y_norm = math.sin(angle) * force_magnitude
 
+    # Map these to the maestro controller units (quarter-microseconds)
     x = round(x_norm * 2000 + 6000)
     y = round(y_norm * 2000 + 6000)
 
+    # Constrain the values between 4000 and 8000
     x = max(4000, min(8000, x))
     y = max(4000, min(8000, y))
 
