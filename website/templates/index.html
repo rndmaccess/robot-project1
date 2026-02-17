@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Circle Joystick</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            /* Soft black/charcoal gradient */
+            background: radial-gradient(circle, #2c2c2c 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Column Wrappers */
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* The Outer Ring */
+        #joy-container {
+            width: 220px;
+            height: 220px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 3px solid #444;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            box-shadow: inset 0 0 20px #000;
+        }
+
+        /* The Inner Stick */
+        #joystick {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #333, #000);
+            border: 2px solid #555;
+            border-radius: 50%;
+            position: absolute;
+            cursor: grab;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Sliders Column */
+        .slider-col input[type="range"] {
+            width: 200px;
+            accent-color: #555; /* Makes the slider handle match the theme */
+        }
+
+        .slider-col div {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Buttons Column */
+        .button-col {
+            width: 250px;
+        }
+
+        button {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: #333;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        button:hover {
+            background: #444;
+            transform: translateX(5px);
+        }
+
+        button:active {
+            background: #222;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Column 1: Movement -->
+    <div class="control-group">
+        <div id="joy-container">
+            <div id="joystick"></div>
+        </div>
+    </div>
+
+    <!-- Column 2: Sliders -->
+    <div class="control-group slider-col">
+        <div>
+            <label for="pan">Pan Head:</label>
+            <input type="range" id="pan" name="pan" min="4000" max="8000" value="6000">
+        </div>
+        <div>
+            <label for="tilt">Tilt Head:</label>
+            <input type="range" id="tilt" name="tilt" min="4000" max="8000" value="6000">
+        </div>
+        <div>
+            <label for="waist">Rotate Waist:</label>
+            <input type="range" id="waist" name="waist" min="4000" max="8000" value="6000">
+        </div>
+    </div>
+
+    <!-- Column 3: Messages -->
+    <div class="control-group button-col">
+        <div>
+            <button id="say1">"Say Hello, Hunter"</button>
+            <button id="say2">"Say Hunter is so cool."</button>
+            <button id="say3">"Say please don't touch my wheels"</button>
+            <button id="say4">"Say Hunter is the greatest."</button>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('joy-container');
+        const stick = document.getElementById('joystick');
+        const tilt = document.getElementById('tilt');
+        const pan = document.getElementById('pan');
+        const waist = document.getElementById('waist');
+        const say1 = document.getElementById('say1');
+        const say2 = document.getElementById('say2');
+        const say3 = document.getElementById('say3');
+        const say4 = document.getElementById('say4');
+        let isMouseInside = false;
+        let dragStart = null;
+        let stickPos = { x: 0, y: 0 };
+        const maxDistance = 60; // How far the stick can move from center
+
+        const sendRotationData = (rot, endpoint) => {
+            const rot_data = {
+                'rot': rot
+            }
+            const jsonData = JSON.stringify(rot_data)
+
+            /*
+            Make sure that this url is pointing to the
+            flask server running on the robot
+            */
+            fetch('http://10.130.187.65:5002/' + endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: jsonData
+            }).then(response => response.json())
+                    .then(data => console.log('Success:', data))
+                    .catch((error) => console.error('Error:', error))
+        }
+
+        const handleEnter = () => {
+            isMouseInside = true;
+        }
+
+        const handleExit = () => {
+            isMouseInside = false;
+        }
+
+        const handleStart = (e) => {
+            if (!isMouseInside) return;
+            const point = e.touches ? e.touches[0] : e;
+
+            dragStart = {
+                x: point.clientX,
+                y: point.clientY
+            };
+        };
+
+        const handleMove = (e) => {
+            if (!dragStart) return;
+
+            const point = e.touches ? e.touches[0] : e;
+
+            const deltaX = point.clientX - dragStart.x;
+            const deltaY = point.clientY - dragStart.y;
+
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const angle = Math.atan2(deltaY, deltaX);
+
+            const distanceClamped = Math.min(distance, maxDistance);
+
+            stickPos.x = distanceClamped * Math.cos(angle);
+            stickPos.y = distanceClamped * Math.sin(angle);
+
+            stick.style.transform = `translate(${stickPos.x}px, ${stickPos.y}px)`;
+
+            sendPositionData();
+        };
+
+        const sendPositionData = () => {
+            const x = stickPos.x
+            const y = stickPos.y
+            const joystick_data = {
+                'x': x,
+                'y': y
+            }
+            const jsonData = JSON.stringify(joystick_data)
+
+            /*
+            Make sure that this url is pointing to the
+            flask server running on the robot
+            */
+            fetch('http://10.130.187.65:5002/drive', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: jsonData
+            }).then(response => response.json())
+                    .then(data => console.log('Success:', data))
+                    .catch((error) => console.error('Error:', error))
+        }
+
+        const handleEnd = async () => {
+            dragStart = null;
+            stickPos.x = 0;
+            stickPos.y = 0;
+
+            // Snap back to center
+            stick.style.transform = `translate(0px, 0px)`;
+
+            await new Promise(r => setTimeout(r, 50));
+
+            sendPositionData()
+        };
+
+        const sendMessage = (message) => {
+            const message_data = {
+                'message': message
+            }
+            const jsonData = JSON.stringify(message_data)
+
+            /*
+            Make sure that this url is pointing to the
+            flask server running on the robot
+            */
+            fetch('http://10.130.187.65:5002/speak', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: jsonData
+            }).then(response => response.json())
+                    .then(data => console.log('Success:', data))
+                    .catch((error) => console.error('Error:', error))
+        }
+
+        const sendPing = () => {
+            fetch('http://10.130.187.65:5002/ping', {
+                method: 'GET'
+            }).then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        setInterval(sendPing, 500)
+
+        // Event Listeners for Mouse and Touch
+        window.addEventListener('mousedown', handleStart);
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+
+        window.addEventListener('touchstart', handleStart);
+        window.addEventListener('touchmove', handleMove);
+        window.addEventListener('touchend', handleEnd);
+
+        container.addEventListener('mouseenter', handleEnter)
+        container.addEventListener('mouseleave', handleExit)
+
+        pan.addEventListener('change', function () {
+            sendRotationData(pan.value, 'pan_head')
+        })
+
+        tilt.addEventListener('change', function () {
+            sendRotationData(tilt.value, 'tilt_head')
+        })
+
+        waist.addEventListener('change', function () {
+            sendRotationData(waist.value, 'rotate_waist')
+        })
+
+        say1.addEventListener('click', function () {
+            sendMessage('Hello, Hunter')
+        })
+        say2.addEventListener('click', function () {
+            sendMessage('Hunter is so cool.')
+        })
+        say3.addEventListener('click', function () {
+            sendMessage("Please don't touch my wheels.")
+        })
+        say4.addEventListener('click', function () {
+            sendMessage('Hunter is the greatest.')
+        })
+    </script>
+</body>
+</html>
