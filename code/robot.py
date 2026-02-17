@@ -27,10 +27,10 @@ class Robot:
 
 
     def pan_head(self, angle):
-        self.head.pan(angle, 4)
+        self.head.pan(angle, 3)
 
     def tilt_head(self, angle):
-        self.head.tilt(angle, 3)
+        self.head.tilt(angle, 4)
 
     def rotate_waist(self, angle):
         self.waist.rotate(angle, 5)

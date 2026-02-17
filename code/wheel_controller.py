@@ -12,7 +12,7 @@ class WheelController:
 
     def drive(self, speed, chan):
         # 1200 min 1800 max
-        self.controller.setRange(chan, 1200, 1800)
+        self.controller.setRange(chan, 0, 0)
         self.controller.setTarget(chan, speed)
 
 
